@@ -1,0 +1,49 @@
+buildscript {
+    ext.kotlin_version = '2.0.20';
+    repositories {
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+        jcenter()
+        maven {
+            url 'https://mvnrepository.com/artifact/com.android.tools.lint/lint-gradle-api'
+        }
+    }
+    dependencies {
+        // Add the Google Services classpath here
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.15' // The version you're using
+    }
+}
+
+plugins {
+    id 'com.google.gms.google-services' version '4.3.15' apply false
+}
+
+allprojects {
+    repositories {
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+        jcenter()
+        maven {
+            url 'https://mvnrepository.com/artifact/com.android.tools.lint/lint-gradle-api'
+        }
+    }
+}
+
+rootProject.buildDir = "../build"
+
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
